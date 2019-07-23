@@ -1,7 +1,7 @@
 pragma solidity ^ 0.5.1;
 
 /**
-@title   Certs Ledger 
+@title  EldersRoles
 @author  Elders Team
 @notice compatible with  v0.5.10 commit.5a6ea5b1 
 */
@@ -20,7 +20,6 @@ library EldersRoles {
      //rolles for persons 
     enum DefaultRoles {
         defaultVal,
-        elder,
         admin 
     }
  
@@ -35,18 +34,19 @@ library EldersRoles {
        ) internal
   {
          require(RoleNotExistForUser(role, _accountAddress,_role), "Role is already exist");
- 
+         
       role.AccountRoles[_accountAddress].push(_role);
      
     }
     
     
-     function RemoveTypeFromUser(
+     function RemoveRoleFromAccount(
      Roles storage role,
      uint _role,
         address _accountAddress 
         )internal
      {
+ 
 uint[] memory  newRoles =role.AccountRoles[ _accountAddress];
     role.AccountRoles[ _accountAddress]=   newRoles.DeleteValue(_role);
        role.AccountRoles[ _accountAddress].length--;
@@ -75,4 +75,54 @@ uint[] memory  newRoles =role.AccountRoles[ _accountAddress];
             return result;
         }
  
+ function AccountHasRoles(
+  Roles storage role,
+        uint[] memory _validationRoles,
+        address _AccountAddress) internal returns(bool) {
+        bool result = false;
+        
+            uint[] memory _accountRoles =  role.AccountRoles[ _AccountAddress];
+            require(_validationRoles.length <uint(role.MaxRolesArrayLength), "cert-ledger-prefex(16)");
+            require(_accountRoles.length < uint(role.MaxRolesArrayLength), "cert-ledger-prefex(16)");
+            for (uint i = 0; i < _accountRoles.length; i++) {
+                for (uint _role = 0;  _role < _validationRoles.length;  _role++) {
+                    if (_validationRoles[ _role] == _accountRoles[i]) {
+                        result = true;
+
+                    }
+
+                }
+
+            }
+        
+
+       return result;
+        
+
+    }
+
+ //if user is general elder
+    function AccountIsAdmin(
+     Roles storage role,
+        address  _AccountAddress ) internal returns(bool)
+        {
+        bool result = false;
+         
+            uint[] memory _accountRoles = role.AccountRoles[ _AccountAddress];
+            for (uint i = 0; i < _accountRoles.length; i++)
+            {
+                if ( 
+                   _accountRoles[i] == uint(DefaultRoles.admin)) 
+                    {
+                    result = true;
+                    }
+            }
+         
+        
+        require(result, "cert-ledger-prefex(1)");
+       
+         }
+
+
+
 }
