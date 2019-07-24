@@ -12,14 +12,27 @@ contract EldersLogicManag
      using EldersUtilities for address[];
        address _owner;
       address[] _elders;
+      uint _minimumEldersPercentageToVote;
     constructor(
-        address[] memory  _eldersAddresses
-    ) public {
-       _elders =_eldersAddresses;
+        address[] memory  eldersAddresses,
+        uint  minimumEldersPercentageToVote
+       
+    )  public ValIsBetween( minimumEldersPercentageToVote ,100,1) {
+        
+       _elders =eldersAddresses;
+       _minimumEldersPercentageToVote=minimumEldersPercentageToVote;
        _elders .push( msg.sender);
         _owner = msg.sender; 
     }
+      //modifires
+      modifier ValIsBetween(uint _val,uint _maxVal,uint _minVal){
+          bool result=_val>=_minVal &&_val<=_maxVal;
+          require(result,"value is out of limit");
+          _;
+      }
       
+      //events
+     
   //vote end time span
     uint ContractVoteTimeSpan;
       uint ElderVoteTimeSpan;
