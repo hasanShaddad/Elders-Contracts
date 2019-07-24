@@ -21,7 +21,8 @@ contract EldersLogicManag
     }
       
   //vote end time span
-    uint VoteTimeSpan;
+    uint ContractVoteTimeSpan;
+      uint ElderVoteTimeSpan;
 //to create voting on contracts or any other logic between prexes
    struct ContractVote {
         address ElderAddress;
@@ -46,10 +47,11 @@ contract EldersLogicManag
     mapping(address=>uint) AllowedContractsAddresses;
     
     //function AddNewContractVote(_elderAddress,_contractAddress,_contractRole,_isForAdd,_isAgree);
-    // function SetVoteEndTimeSpan(_endVoteTimeSpan);
+    // function SetContractVoteEndTimeSpan(_endVoteTimeSpan);
     //function AddNewLogicContracts(_contractAddress,_contractRole);
     //function GetContractVoteResult(_contractAddress,_contractRole,_isForAdd);
      //function AddNewElderVote(_elderAddress,_elderForVoteAddress,_isForAdd,_isAgree);
+     // function SetElderVoteEndTimeSpan(_endVoteTimeSpan);
      //function GetElderVoteResult(_elderAddress,_isForAdd);
      //function AddNewElder(_elderAddress);
     
