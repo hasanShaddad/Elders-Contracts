@@ -37,35 +37,51 @@ contract EldersLogicManag
     uint ContractVoteTimeSpan;
       uint ElderVoteTimeSpan;
 //to create voting on contracts or any other logic between prexes
-   struct ContractVote {
-        address ElderAddress;
+   struct ContractVoteDetails {
+        
         address[] contractAddresses;
         uint contractRole;
         bool IsForAdd;
         bool isAgree;
     }
-    
+    ContractVoteDetails _ContractVoteDetails;
     //add or remove Elder
-     struct ElderVote {
-        address ElderAddress;
-        address[] ElderForVoteAddress;
+     struct ElderVoteDetails {
+        address[] EldersForVoteAddress;
         bool IsForAdd;
         bool isAgree;
     }
+    ElderVoteDetails _ElderVoteDetails;
    // temp mapping for contract voting processor 
-    mapping(address=>ContractVote)TempContractVote;
+    mapping(uint=>address[])TempContractVote;
     // temp mapping for Elders voting processor 
-    mapping(address=>ElderVote)TempElderVote;
+    mapping(uint=>address[])TempElderVote;
     //address mapping to role for logic contracts to be added after voting
     mapping(address=>uint) AllowedContractsAddresses;
     
-    //function AddNewContractVote(_elderAddress,_contractAddress,_contractRole,_isForAdd,_isAgree);
-    // function SetContractVoteEndTimeSpan(_endVoteTimeSpan);
-    //function AddNewLogicContracts(_contractAddress,_contractRole);
-    //function GetContractVoteResult(_contractAddress,_contractRole,_isForAdd);
-     //function AddNewElderVote(_elderAddress,_elderForVoteAddress,_isForAdd,_isAgree);
-     // function SetElderVoteEndTimeSpan(_endVoteTimeSpan);
-     //function GetElderVoteResult(_elderAddress,_isForAdd);
-     //function AddNewElder(_elderAddress);
     
+    /**
+    
+    //set Cotract vote details
+    
+    function SetCotractVoteDetails()internal TempContractVoteIsEmpty(){
+        
+    }
+    
+    //function AddNewContractVote(_elderAddress,_contractAddress,_contractRole,_isForAdd,_isAgree);
+ 
+    function AddNewContractVote(address _elderAddress, bool _isAgree) internal
+    AddressIsElder(_elderAddress) ContractVoteNotExist(_elderAddress) ContractVoteDetailsNotEmpty()
+    {
+        
+    }
+
+      function SetContractVoteEndTimeSpan(_endVoteTimeSpan);
+    function AddNewLogicContracts(_contractAddress,_contractRole);
+     function GetContractVoteResult(_contractAddress,_contractRole,_isForAdd);
+     function AddNewElderVote(_elderAddress ,_isAgree);
+      function SetElderVoteEndTimeSpan(_endVoteTimeSpan);
+     function GetElderVoteResult(_elderAddress,_isForAdd);
+     function AddNewElder(_elderAddress);
+    */
 }
