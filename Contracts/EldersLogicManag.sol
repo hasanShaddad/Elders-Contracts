@@ -13,6 +13,9 @@ contract EldersLogicManag
        address _owner;
      uint _eldersCount;
       uint _minimumEldersPercentageToVote;
+  
+  
+  
     constructor(
         address[] memory  eldersAddresses,
         uint  minimumEldersPercentageToVote
@@ -25,46 +28,59 @@ contract EldersLogicManag
         _owner = msg.sender; 
     }
     
-      
-      
-      
-      
-      
-      
-      
+ 
       
       //events
      
   //vote end time span
     uint ContractVoteTimeSpan;
       uint ElderVoteTimeSpan;
+      
+      
+      
 //to create voting on contracts or any other logic between prexes
    struct ContractVoteDetails {
         
         address[] ContractAddresses;
         uint ContractRole;
         bool IsForAdd;
-     
+     uint VotersCount;
     }
 
     //add or remove Elder
      struct ElderVoteDetails {
         address[] EldersForVoteAddress;
         bool IsForAdd;
-     
+       uint VotersCount;
     }
         
-    
     ContractVoteDetails _ContractVoteDetails;
     ElderVoteDetails _ElderVoteDetails;
+    
+    
+    
+    
+    
+    //mappings
+    
+    
    // temp mapping for contract voting processor 1 or 0 as boolian mapping to elders addresses
-    mapping(uint=>address[])TempContractVote;
+    mapping(address=>uint)TempContractVote;
     // temp mapping for Elders voting processor 
-    mapping(uint=>address[])TempElderVote;
+    mapping(address=>uint)TempElderVote;
     //address mapping to role for logic contracts to be added after voting
     mapping(address=>uint) AllowedContractsAddresses;
     //Elders
     mapping(address=>bool) Elders;
+    
+    
+    
+    
+    
+    
+    
+    
+    
       //modifires
       modifier ValIsBetween(uint _val,uint _maxVal,uint _minVal){
           bool result=_val>=_minVal &&_val<=_maxVal;
@@ -73,7 +89,7 @@ contract EldersLogicManag
       }
       
       modifier TempContractVoteIsEmpty(){
-          require(TempContractVote[0].length==0 &&TempContractVote[1].length==0,"Temp Contract Vote Is not Empty");
+          require(ContractVoteDetails.VotersCount==0 ,"Temp Contract Vote Is not Empty");
           _;
       }
     
@@ -83,10 +99,20 @@ contract EldersLogicManag
       }
       
       modifier AddressIsElder(address _elderAddress){
-          require();
+          require(Elders[_elderAddress]==true,"Address Is not an Elder");
           _;
           }
           
+          modifier ContractVoteNotExist(address _elderAddress){
+              require(TempContractVote[_elderAddress]==0,"Contract Vote for this elder is Exist");
+           _;
+          }
+          
+          
+          
+        //functions  
+          
+ 
           //add default elders to Elders mapp
      function AddAddressesToElders(address[] memory _elderAddresses) private{
         for(uint i =0; i< _elderAddresses.length; i++){
@@ -119,8 +145,8 @@ contract EldersLogicManag
     }
     //function AddNewContractVote(_elderAddress,_contractAddress,_contractRole,_isForAdd,_isAgree);
  
-    function AddNewContractVote(address _elderAddress, bool _isAgree) internal
-    AddressIsElder(_elderAddress) ContractVoteNotExist(_elderAddress) ContractVoteDetailsNotEmpty()
+    function VoteOnNewContract(address _elderAddress, bool _isAgree) internal
+    AddressIsElder(_elderAddress) ContractVoteNotExist(_elderAddress) ContractVoteDetailsNotEmpty() ContractVoteTimeSpanIsValid()
     {
         
     }
