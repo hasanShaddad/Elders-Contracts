@@ -21,8 +21,9 @@ contract EldersLogicManag
         uint  minimumEldersPercentageToVote
        
     )  public ValIsBetween( minimumEldersPercentageToVote ,100,1) {
-         eldersAddresses .push( msg.sender);
-      _eldersCount =eldersAddresses.length;
+       
+      _eldersCount =eldersAddresses.length+1;
+        eldersAddresses[_eldersCount] =msg.sender;
       AddAddressesToElders(eldersAddresses);
        _minimumEldersPercentageToVote=minimumEldersPercentageToVote;
         _owner = msg.sender; 
@@ -40,7 +41,7 @@ contract EldersLogicManag
       
 //to create voting on contracts or any other logic between prexes
    struct  ContractVoteDetails {
-        address[] ContractAddresses;
+        address  ContractAddress;
         uint ContractRole;
         bool IsForAdd;
      uint VotersCount;
@@ -49,7 +50,7 @@ contract EldersLogicManag
 
     //add or remove Elder
      struct ElderVoteDetails {
-        address[] EldersForVoteAddress;
+        address  EldersForVoteAddress;
         bool IsForAdd;
        uint VotersCount;
    uint AgrredVoicesCount;
@@ -90,7 +91,7 @@ contract EldersLogicManag
       }
       
       modifier TempContractVoteIsEmpty(){
-          require(ContractVoteDetails.VotersCount==0 ,"Temp Contract Vote Is not Empty");
+          require(_ContractVoteDetails.VotersCount==0 ,"Temp Contract Vote Is not Empty");
           _;
       }
     
@@ -116,7 +117,7 @@ contract EldersLogicManag
           }
           
          modifier  ContractVoteDetailsNotEmpty(){
-               _ContractVoteDetails.ContractAddresses != address(0);
+               _ContractVoteDetails.ContractAddress != address(0);
                _;
           }
           
@@ -148,14 +149,15 @@ contract EldersLogicManag
           
     //set Cotract vote details
     
-    function SetContractVoteDetails( address[] memory _contractAddresses,
+    function SetContractVoteDetails( address  _contractAddress,
         uint _contractRole,
         bool _isForAdd)
         internal 
         TempContractVoteIsEmpty()
         SenderIsOwner(msg.sender)
         {
-        _ContractVoteDetails =ContractVoteDetails (_contractAddresses, _contractRole,_isForAdd);
+        _ContractVoteDetails =ContractVoteDetails (_contractAddress,
+          _contractRole, _isForAdd,0,0);
     }
     
     function EmptyContractVoteDetails()
@@ -163,11 +165,11 @@ contract EldersLogicManag
         TempContractVoteIsEmpty()
         SenderIsOwner(msg.sender)
      {
-        _ContractVoteDetails.ContractAddresses = address(0);
+        _ContractVoteDetails.ContractAddress = address(0);
         _ContractVoteDetails.ContractRole=0;
         _ContractVoteDetails.AgrredVoicesCount=0;
          _ContractVoteDetails.IsForAdd;
-         SetContractVoteEndTimeSpan(-1);
+         SetContractVoteEndTimeSpan(0);
     }
     //function AddNewContractVote(_elderAddress,_contractAddress,_contractRole,_isForAdd,_isAgree);
  
@@ -188,19 +190,19 @@ contract EldersLogicManag
         
     }
  
-     function SetContractVoteEndTimeSpan(_endVoteTimeSpan)public view AddressIsOwner(msg.sender){
+     function SetContractVoteEndTimeSpan(uint _endVoteTimeSpan)public   AddressIsOwner(msg.sender){
          ContractVoteTimeSpan =_endVoteTimeSpan;
      }
      
      
    
      function GetContractVoteResult(address _contractAddress,uint _contractRole,bool _isForAdd)public
-     VotersPersentageIsValid() returns(bool _result){
-         var result =100*( _ContractVoteDetails.AgrredVoicesCount/votersCount);
+     VotersPersentageIsValid() ContractVoteTimeSpanIsValid() returns(bool _result){
+         uint result =100*( _ContractVoteDetails.AgrredVoicesCount/ _ContractVoteDetails.VotersCount);
          return result>=50;
      }
      
-     
+     /**
       function AddNewLogicContracts(_contractAddress,_contractRole);
       function GetContractVoteDetails()
      
@@ -210,5 +212,5 @@ contract EldersLogicManag
      function GetElderVoteResult(_elderAddress,_isForAdd);
      function AddNewElder(_elderAddress);
      function GetEldersVoteDetails()
-     
+     */
 }
