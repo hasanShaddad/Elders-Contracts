@@ -214,7 +214,12 @@ contract EldersLogicManag
       } 
       
       
-      
+         function RemoveLogicContract(address _contractAddress) public AddressIsOwner(msg.sender) ContractVoteDetailsNotEmpty(){
+         require(GetContractVoteResult( _contractAddress),"elders refused this contract");
+         require( _ContractVoteDetails.IsForAdd==false,"voting is not for removing contract");
+          logicContracts[ _ContractVoteDetails.ContractAddress]= 0;
+           EmptyContractVoteDetails();
+      } 
       
          /**
       function GetContractVoteDetails()
