@@ -39,11 +39,12 @@ contract EldersLogicManag
       
       
 //to create voting on contracts or any other logic between prexes
-   struct ContractVoteDetails {
+   struct  ContractVoteDetails {
         address[] ContractAddresses;
         uint ContractRole;
         bool IsForAdd;
      uint VotersCount;
+     uint AgrredVoicesCount;
     }
 
     //add or remove Elder
@@ -51,6 +52,7 @@ contract EldersLogicManag
         address[] EldersForVoteAddress;
         bool IsForAdd;
        uint VotersCount;
+   uint AgrredVoicesCount;
     }
         
     ContractVoteDetails _ContractVoteDetails;
@@ -97,10 +99,16 @@ contract EldersLogicManag
           _;
       }
       
-      modifier AddressIsElder(address _elderAddress){
-          require(Elders[_elderAddress]==true,"Address Is not an Elder");
+      modifier ElderAddressIsValid(address _elderAddress,bool _hasToBe){
+          require(Elders[_elderAddress]== _hasToBe," Elder address as not valid");
           _;
           }
+          
+             modifier AddressIsOwner(address _address){
+             require(_address== _owner,"address is not for owner");
+          _;   
+          }
+          
           
           modifier ContractVoteNotExist(address _elderAddress){
               require(TempContractVote[_elderAddress]==0,"Contract Vote for this elder is Exist");
@@ -117,7 +125,12 @@ contract EldersLogicManag
               _;
           }
           
-          
+          modifier VotersPersentageIsValid(){
+           uint votersCount=    _ContractVoteDetails.VotersCount;
+        uint voterPersent = 100*(votersCount/ _eldersCount);
+        require(voterPersent>50,"Voters Persentage Is not Valid");
+       _;
+          }
           
           
           
@@ -152,17 +165,19 @@ contract EldersLogicManag
      {
         _ContractVoteDetails.ContractAddresses = address(0);
         _ContractVoteDetails.ContractRole=0;
+        _ContractVoteDetails.AgrredVoicesCount=0;
          _ContractVoteDetails.IsForAdd;
          SetContractVoteEndTimeSpan(-1);
     }
     //function AddNewContractVote(_elderAddress,_contractAddress,_contractRole,_isForAdd,_isAgree);
  
     function VoteOnNewContract(address _elderAddress, bool _isAgree) internal
-    AddressIsElder(_elderAddress) ContractVoteNotExist(_elderAddress) ContractVoteDetailsNotEmpty() ContractVoteTimeSpanIsValid()
+    ElderAddressIsValid(_elderAddress,true) ContractVoteNotExist(_elderAddress) ContractVoteDetailsNotEmpty() ContractVoteTimeSpanIsValid()
     {
         uint result =0;
         if(_isAgree){
             result =1;
+           _ContractVoteDetails.AgrredVoicesCount++;
         }else
         {
              result =2;
@@ -172,15 +187,28 @@ contract EldersLogicManag
         _ContractVoteDetails.VotersCount++;
         
     }
-/**
-      function SetContractVoteEndTimeSpan(_endVoteTimeSpan);
-    function AddNewLogicContracts(_contractAddress,_contractRole);
-     function GetContractVoteResult(_contractAddress,_contractRole,_isForAdd);
+ 
+     function SetContractVoteEndTimeSpan(_endVoteTimeSpan)public view AddressIsOwner(msg.sender){
+         ContractVoteTimeSpan =_endVoteTimeSpan;
+     }
      
+     
+   
+     function GetContractVoteResult(address _contractAddress,uint _contractRole,bool _isForAdd)public
+     VotersPersentageIsValid() returns(bool _result){
+         var result =100*( _ContractVoteDetails.AgrredVoicesCount/votersCount);
+         return result>=50;
+     }
+     
+     
+      function AddNewLogicContracts(_contractAddress,_contractRole);
+      function GetContractVoteDetails()
      
      function AddNewElderVote(_elderAddress ,_isAgree);
+ 
       function SetElderVoteEndTimeSpan(_endVoteTimeSpan);
      function GetElderVoteResult(_elderAddress,_isForAdd);
      function AddNewElder(_elderAddress);
-     */
+     function GetEldersVoteDetails()
+     
 }
