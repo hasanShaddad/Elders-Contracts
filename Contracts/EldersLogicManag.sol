@@ -67,14 +67,15 @@ contract EldersLogicManag
     
     
    // temp mapping for contract voting processor 1 or 2 as boolian mapping to elders addresses
-    mapping(address=>uint)TempContractVote;
+    mapping(address=>uint) private TempContractVote;
     // temp mapping for Elders voting processor 
-    mapping(address=>uint)TempElderVote;
+    mapping(address=>uint)private  TempElderVote;
     //address mapping to role for logic contracts to be added after voting
-    mapping(address=>uint) AllowedContractsAddresses;
+    mapping(address=>uint) private  AllowedContractsAddresses;
     //Elders
-    mapping(address=>bool) Elders;
-    
+    mapping(address=>bool) private Elders;
+    //logicContracts
+        mapping(address=>uint) private logicContracts;
     
     
     
@@ -206,10 +207,8 @@ contract EldersLogicManag
      
   
       function AddNewLogicContract(address _contractAddress) public AddressIsOwner(msg.sender) ContractVoteDetailsNotEmpty(){
-         if(GetContractVoteResult( _contractAddress)){
-             //add contract to list
-         }
-           
+         require(GetContractVoteResult( _contractAddress),"elders refused this contract");
+          logicContracts[ _ContractVoteDetails.ContractAddress]=  _ContractVoteDetails.ContractRole;
       } 
       
       
