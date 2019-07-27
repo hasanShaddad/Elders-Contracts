@@ -128,7 +128,7 @@ contract EldersLogicManag
               _;
           }
           
-          modifier VotersPersentageIsValid(){
+          modifier EldersVotersPersentageIsValid(){
            uint votersCount=    _ContractVoteDetails.VotersCount;
         uint voterPersent = 100*(votersCount/ _eldersCount);
         require(voterPersent>50,"Voters Persentage Is not Valid");
@@ -170,10 +170,10 @@ contract EldersLogicManag
         _ContractVoteDetails.ContractAddress = address(0);
         _ContractVoteDetails.ContractRole=0;
         _ContractVoteDetails.AgrredVoicesCount=0;
-         _ContractVoteDetails.IsForAdd;
+         _ContractVoteDetails.IsForAdd=false;
          SetContractVoteEndTimeSpan(0);
     }
-    //function AddNewContractVote(_elderAddress,_contractAddress,_contractRole,_isForAdd,_isAgree);
+  
  
     function VoteOnNewContract(address _elderAddress, bool _isAgree) internal
     ElderAddressIsValid(_elderAddress,true) ContractVoteNotExist(_elderAddress) ContractVoteDetailsNotEmpty() ContractVoteTimeSpanIsValid()
@@ -199,18 +199,20 @@ contract EldersLogicManag
      
    
      function GetContractVoteResult(address _contractAddress)public
-     VotersPersentageIsValid() ContractVoteTimeSpanIsValid() returns(bool _result){
+     EldersVotersPersentageIsValid() ContractVoteTimeSpanIsValid() returns(bool _result){
          require(_contractAddress== _ContractVoteDetails.ContractAddress,"contract address not valid");
          uint result =100*( _ContractVoteDetails.AgrredVoicesCount/ _ContractVoteDetails.VotersCount);
          return result>=50;
      }
      
   
-     function AddNewLogicContract(address _contractAddress) public AddressIsOwner(msg.sender) ContractVoteDetailsNotEmpty(){
+      function AddNewLogicContract(address _contractAddress) public AddressIsOwner(msg.sender) ContractVoteDetailsNotEmpty(){
          require(GetContractVoteResult( _contractAddress),"elders refused this contract");
+         require( _ContractVoteDetails.IsForAdd,"voting is not for adding contract");
           logicContracts[ _ContractVoteDetails.ContractAddress]=  _ContractVoteDetails.ContractRole;
            EmptyContractVoteDetails();
       } 
+      
       
       
       
