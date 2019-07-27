@@ -206,11 +206,11 @@ contract EldersLogicManag
      }
      
   
-      function AddNewLogicContract(address _contractAddress) public AddressIsOwner(msg.sender) ContractVoteDetailsNotEmpty(){
+     function AddNewLogicContract(address _contractAddress) public AddressIsOwner(msg.sender) ContractVoteDetailsNotEmpty(){
          require(GetContractVoteResult( _contractAddress),"elders refused this contract");
           logicContracts[ _ContractVoteDetails.ContractAddress]=  _ContractVoteDetails.ContractRole;
+           EmptyContractVoteDetails();
       } 
-      
       
       
       
