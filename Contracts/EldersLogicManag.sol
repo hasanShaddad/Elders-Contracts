@@ -117,12 +117,13 @@ contract EldersLogicManag
           }
           
          modifier  ContractVoteDetailsNotEmpty(){
-               _ContractVoteDetails.ContractAddress != address(0);
+              require(_ContractVoteDetails.ContractAddress != address(0)&&_ContractVoteDetails.ContractRole !=0 ,"contract data not valid");
+             
                _;
           }
           
           modifier ContractVoteTimeSpanIsValid(){
-              ContractVoteTimeSpan>now;
+           require(  ContractVoteTimeSpan>now,"Contract Vote TimeSpan Is not Valid");
               _;
           }
           
@@ -196,14 +197,25 @@ contract EldersLogicManag
      
      
    
-     function GetContractVoteResult(address _contractAddress,uint _contractRole,bool _isForAdd)public
+     function GetContractVoteResult(address _contractAddress)public
      VotersPersentageIsValid() ContractVoteTimeSpanIsValid() returns(bool _result){
+         require(_contractAddress== _ContractVoteDetails.ContractAddress,"contract address not valid");
          uint result =100*( _ContractVoteDetails.AgrredVoicesCount/ _ContractVoteDetails.VotersCount);
          return result>=50;
      }
      
-     /**
-      function AddNewLogicContracts(_contractAddress,_contractRole);
+  
+      function AddNewLogicContract(address _contractAddress) public AddressIsOwner(msg.sender) ContractVoteDetailsNotEmpty(){
+         if(GetContractVoteResult( _contractAddress)){
+             //add contract to list
+         }
+           
+      } 
+      
+      
+      
+      
+         /**
       function GetContractVoteDetails()
      
      function AddNewElderVote(_elderAddress ,_isAgree);
