@@ -162,6 +162,16 @@ contract EldersLogicManag
           _contractRole, _isForAdd,0,0);
     }
     
+     function GetContractVoteDetails()
+        public view returns(   address,
+        uint,
+        bool ,
+     uint)
+        {
+       return ( _ContractVoteDetails.ContractAddress, _ContractVoteDetails.ContractRole ,
+       _ContractVoteDetails.IsForAdd,  _ContractVoteDetails.VotersCount  )  ;
+    }
+    
     function EmptyContractVoteDetails()
      internal 
         TempContractVoteIsEmpty()
@@ -219,6 +229,7 @@ contract EldersLogicManag
           logicContracts[ _ContractVoteDetails.ContractAddress]= 0;
            EmptyContractVoteDetails();
       } 
+      
       
       
          /**
