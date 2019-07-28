@@ -18,12 +18,11 @@ contract EldersVotingManag
   
     constructor(
         address[] memory  eldersAddresses,
-        uint  minimumEldersPercentageToVote
+        uint  minimumEldersPercentageToVote 
        
     )  public ValIsBetween( minimumEldersPercentageToVote ,100,1) {
-       
       _eldersCount =eldersAddresses.length+1;
-        eldersAddresses[_eldersCount] =msg.sender;
+ 
       AddAddressesToElders(eldersAddresses);
        _minimumEldersPercentageToVote=minimumEldersPercentageToVote;
         _owner = msg.sender; 
@@ -141,7 +140,9 @@ contract EldersVotingManag
      function AddAddressesToElders(address[] memory _elderAddresses) private{
         for(uint i =0; i< _elderAddresses.length; i++){
             Elders[ _elderAddresses[i]]=true;
-        }     
+        }    
+ 
+        Elders[_owner]=true;
      }   
           
           
