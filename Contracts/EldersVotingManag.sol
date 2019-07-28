@@ -1,7 +1,7 @@
 pragma solidity ^ 0.5.1;
 
 /**
-@title  EldersVotingManag
+@title  EldersLogicManag
 @author  Elders Team
 @notice compatible with  v0.5.10 commit.5a6ea5b1 
 */
@@ -10,9 +10,9 @@ import "./EldersUtilities.sol";
 contract EldersVotingManag 
 {
      using EldersUtilities for address[];
-       address _owner;
-     uint _eldersCount;
-      uint _minimumEldersPercentageToVote;
+       address private  _owner;
+     uint  private _eldersCount;
+      uint  private _minimumEldersPercentageToVote;
   
   
   
@@ -34,8 +34,8 @@ contract EldersVotingManag
       //events
      
   //vote end time span
-    uint ContractVoteTimeSpan;
-      uint ElderVoteTimeSpan;
+    uint private ContractVoteTimeSpan;
+      uint private ElderVoteTimeSpan;
       
       
       
@@ -56,9 +56,12 @@ contract EldersVotingManag
    uint AgrredVoicesCount;
     }
         
-    ContractVoteDetails _ContractVoteDetails;
-    ElderVoteDetails _ElderVoteDetails;
- 
+    ContractVoteDetails private  _ContractVoteDetails;
+    ElderVoteDetails private _ElderVoteDetails;
+    
+    
+    
+    
     
     //mappings
     
@@ -72,6 +75,13 @@ contract EldersVotingManag
     //Elders
     mapping(address=>bool) private Elders;
  
+    
+    
+    
+    
+    
+    
+    
     
       //modifires
       modifier ValIsBetween(uint _val,uint _maxVal,uint _minVal){
@@ -201,7 +211,11 @@ contract EldersVotingManag
          return result>=50;
      }
      
- 
+  
+     
+      
+      
+      
          /**
    
      
