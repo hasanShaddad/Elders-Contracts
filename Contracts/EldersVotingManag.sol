@@ -1,7 +1,7 @@
 pragma solidity ^ 0.5.1;
 
 /**
-@title  EldersLogicManag
+@title  EldersVotingManag
 @author  Elders Team
 @notice compatible with  v0.5.10 commit.5a6ea5b1 
 */
