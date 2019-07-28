@@ -55,7 +55,7 @@ contract EldersVotingManag
    uint AgrredVoicesCount;
     }
         
-    ContractVoteDetails private  _ContractVoteDetails;
+    ContractVoteDetails internal  _ContractVoteDetails;
     ElderVoteDetails private _ElderVoteDetails;
     
     
