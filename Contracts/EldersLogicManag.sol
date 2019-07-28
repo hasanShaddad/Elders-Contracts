@@ -14,9 +14,14 @@ contract EldersLogicManag is EldersVotingManag
        address _owner;
  
     constructor(
-        
+        address[] memory  eldersAddresses,
+        uint  minimumEldersPercentageToVote 
        
-    )  public   {
+    ) public   EldersVotingManag (
+         eldersAddresses,
+         minimumEldersPercentageToVote 
+       
+    ){
        
         _owner = msg.sender; 
     }
