@@ -4,6 +4,7 @@ pragma solidity ^ 0.5.1;
 @title  EldersRoles
 @author  Elders Team
 @notice compatible with  v0.5.10 commit.5a6ea5b1 
+* @dev EldersRoles is a helper library for  adding or removing multi roles to accounts
 */
 
 import "./EldersUtilities.sol";
@@ -11,17 +12,19 @@ import "./EldersUtilities.sol";
 library EldersRoles {
      using EldersUtilities for uint[];
      
+     
     struct  Roles{
-         //mapping account address to Roles
+     //mapping account address to Roles
     mapping(address => uint[]) AccountRoles;
    // the maximum limit for type array
     uint8 MaxRolesArrayLength;
     }
-     //rolles for persons 
+     //Default rolles for accounts
     enum DefaultRoles {
         defaultVal,
         admin 
     }
+     //events
  
  function SetMaxRolesArrayLength(Roles storage role,uint8 maxArrayVal)internal{
      role.MaxRolesArrayLength=maxArrayVal;
@@ -47,18 +50,21 @@ library EldersRoles {
         )internal
      {
  
-uint[] memory  newRoles =role.AccountRoles[ _accountAddress];
-    role.AccountRoles[ _accountAddress]=   newRoles.DeleteValue(_role);
-       role.AccountRoles[ _accountAddress].length--;
-        
+   uint[] memory  newRoles =role.AccountRoles[ _accountAddress];
+       role.AccountRoles[ _accountAddress]=   newRoles.DeleteValue(_role);
+          role.AccountRoles[ _accountAddress].length--;
+           
     }
-    
- 
+ /**
+ * @dev if this role is not Exist for this account address  
+ * use this function for modifire logic contract methodes for one role only
+ * function returns false when role is exist
+ */
  function RoleNotExistForUser(
  Roles storage role,
             address _address,
             uint _roleID
-             ) internal returns(bool){
+             ) internal view returns(bool){
             bool result = true;
             
             uint[] memory accountRoles =role.AccountRoles[_address];
@@ -75,10 +81,14 @@ uint[] memory  newRoles =role.AccountRoles[ _accountAddress];
             return result;
         }
  
+  /**
+ * @dev if this roles are assigned to this account address or not 
+ * use this function for modifire logic contract methodes to check for array of roles
+ */
  function AccountHasRoles(
   Roles storage role,
         uint[] memory _validationRoles,
-        address _AccountAddress) internal returns(bool) {
+        address _AccountAddress) internal view  returns(bool) {
         bool result = false;
         
             uint[] memory _accountRoles =  role.AccountRoles[ _AccountAddress];
@@ -101,10 +111,13 @@ uint[] memory  newRoles =role.AccountRoles[ _accountAddress];
 
     }
 
- //if user is general elder
+  /**
+ * @dev if this account address is for admin
+ * use this function for modifire logic contract methodes to check if account is admin
+ */
     function AccountIsAdmin(
      Roles storage role,
-        address  _AccountAddress ) internal returns(bool)
+        address  _AccountAddress ) internal view returns(bool)
         {
         bool result = false;
          
