@@ -108,10 +108,6 @@ contract EldersVotingManag
  */ 
     mapping(address=>uint)private  TempElderVote;
      /**
- * @dev mapping the allowed contract addres to role for logic contracts to be added after voting
- */ 
-    mapping(address=>uint) private  AllowedContractsAddresses;
-   /**
  * @dev all elders in app 
  * map the elder address account to true after voting on adding him is succeeded
  * map the elder address account to false after voting on removing him is succeeded
