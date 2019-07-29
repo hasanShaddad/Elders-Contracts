@@ -1,9 +1,10 @@
 pragma solidity ^ 0.5.1;
 
 /**
-@title  EldersUtilities 
-@author  Elders Team
-@notice compatible with  v0.5.10 commit.5a6ea5b1 
+*@title  EldersUtilities 
+*@author  Elders Team
+*@notice compatible with  v0.5.10 commit.5a6ea5b1 
+* @dev EldersUtilities is a helper library for uint and addresses  
 */
  
 library EldersUtilities {
@@ -118,6 +119,7 @@ library EldersUtilities {
         data[i] = newValue;
         return data;
     }
+
  
 
 }
