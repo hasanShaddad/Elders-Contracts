@@ -1,9 +1,12 @@
 pragma solidity ^ 0.5.1;
 
 /**
-@title  EldersLogicManag
-@author  Elders Team
-@notice compatible with  v0.5.10 commit.5a6ea5b1 
+ *@title  EldersLogicManag
+ *@author  Elders Team
+ *@notice compatible with  v0.5.10 commit.5a6ea5b1 
+ * @dev EldersVotingManag is a base contract for managing logic contracts and elders voting,
+ * allowing Elders to vote on adding or removing Elder or logic contract
+ * the base architecture for EldersVotingManag. It is *not* intended to be modified / overridden
 */
 
 import "./EldersUtilities.sol";
@@ -13,18 +16,13 @@ contract EldersVotingManag
        address private  _owner;
      uint  private _eldersCount;
       uint  private _minimumEldersPercentageToVote;
+  bool private  _contractIsConstruct=false;
   
   
-  
-    constructor(
-        address[] memory  eldersAddresses,
-        uint  minimumEldersPercentageToVote 
+    constructor( 
        
-    )  public ValIsBetween( minimumEldersPercentageToVote ,100,1) {
-      _eldersCount =eldersAddresses.length+1;
- 
-      AddAddressesToElders(eldersAddresses);
-       _minimumEldersPercentageToVote=minimumEldersPercentageToVote;
+    ) public  {
+
         _owner = msg.sender; 
     }
     
@@ -137,12 +135,17 @@ contract EldersVotingManag
           
  
           //add default elders to Elders mapp
-     function AddAddressesToElders(address[] memory _elderAddresses) private{
+     function AddAddressesToElders(address[] memory _elderAddresses,uint minimumEldersPercentageToVote) internal SenderIsOwner(msg.sender) {
+         require(_contractIsConstruct==false,"AddAddressesToElders is used before");
+         
+          _eldersCount = _elderAddresses.length+1;
         for(uint i =0; i< _elderAddresses.length; i++){
             Elders[ _elderAddresses[i]]=true;
         }    
  
         Elders[_owner]=true;
+         _minimumEldersPercentageToVote=minimumEldersPercentageToVote;
+        _contractIsConstruct=true;
      }   
           
           
