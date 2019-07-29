@@ -4,6 +4,8 @@ pragma solidity ^ 0.5.1;
 @title  EldersLogicManag
 @author  Elders Team
 @notice compatible with  v0.5.10 commit.5a6ea5b1 
+ * @dev EldersLogicManag is a base contract for managing add or remove logic contracts ,
+ * allowing Elders to add or remove logic contracts
 */
 
 import "./EldersUtilities.sol";
@@ -12,7 +14,9 @@ contract EldersLogicManag is EldersVotingManag
 {
  
        address _owner;
- 
+ /** 
+ * @dev Add default elders array to Elders list in EldersVotingManag contract 
+ */
     constructor(
         address[] memory  eldersAddresses,
         uint  minimumEldersPercentageToVote 
@@ -23,8 +27,10 @@ contract EldersLogicManag is EldersVotingManag
     }
     
  
-     
-        mapping(address=>uint) private logicContracts;
+      /** 
+ * @dev mapping to store allowed logic contracts 
+ */
+        mapping(address=>uint) private _allowedLogicContracts;
     
  
     
@@ -45,14 +51,14 @@ contract EldersLogicManag is EldersVotingManag
       function AddNewLogicContract(address _contractAddress) public AddressIsOwner(msg.sender) ContractVoteDetailsNotEmpty(){
          require(GetContractVoteResult( _contractAddress),"elders refused this contract");
          require( _ContractVoteDetails.IsForAdd,"voting is not for adding contract");
-          logicContracts[ _ContractVoteDetails.ContractAddress]=  _ContractVoteDetails.ContractRole;
+          _allowedLogicContracts[ _ContractVoteDetails.ContractAddress]=  _ContractVoteDetails.ContractRole;
            EmptyContractVoteDetails();
       } 
       
       function RemoveLogicContract(address _contractAddress) public AddressIsOwner(msg.sender) ContractVoteDetailsNotEmpty(){
          require(GetContractVoteResult( _contractAddress),"elders refused this contract");
          require( _ContractVoteDetails.IsForAdd==false,"voting is not for removing contract");
-          logicContracts[ _ContractVoteDetails.ContractAddress]= 0;
+          _allowedLogicContracts[ _ContractVoteDetails.ContractAddress]= 0;
            EmptyContractVoteDetails();
       } 
       
