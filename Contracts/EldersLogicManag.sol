@@ -17,12 +17,8 @@ contract EldersLogicManag is EldersVotingManag
         address[] memory  eldersAddresses,
         uint  minimumEldersPercentageToVote 
        
-    ) public   EldersVotingManag (
-         eldersAddresses,
-         minimumEldersPercentageToVote 
-       
-    ){
-       
+    ) public    ValIsBetween( minimumEldersPercentageToVote ,100,1){
+        AddAddressesToElders(eldersAddresses,minimumEldersPercentageToVote);
         _owner = msg.sender; 
     }
     
