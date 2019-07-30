@@ -53,7 +53,15 @@ contract test is EldersVotingManag,EldersLogicManag {
       
 }
 ```
+## contracts
+>@title  EldersRoles
+>@author  Elders Team
+>@notice compatible with  v0.5.10 commit.5a6ea5b1 
+>* @dev EldersRoles is a helper library for  adding or removing multi roles to accounts
+>* first you have to SetMaxRolesArrayLength
+>* then use setters and getters to add and remove or validate roles to user
 
+## framework
 > You need an ethereum development framework for the above import statements to work! Check out these guides for [Truffle], [Embark] or [Buidler].
  
  Keep in mind that the API docs are work in progress.
