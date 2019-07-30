@@ -61,12 +61,14 @@ contract test is EldersVotingManag,EldersLogicManag {
 >* EldersRoles is a helper library for  adding or removing multi roles to accounts
 >* first you have to SetMaxRolesArrayLength
 >* then use setters and getters to add and remove or validate roles to user
+
 **EldersVotingManags** 
 >*@title  EldersLogicManag
 >*@author  Elders Team
 >*@notice compatible with  v0.5.10 commit.5a6ea5b1 
 >* EldersVotingManag is a base contract for managing logic contracts and elders voting,
 >* allowing Elders to vote on adding or removing Elder or logic contract
+
 **EldersLogicManag** 
 >@title  EldersLogicManag
 >@author  Elders Team
