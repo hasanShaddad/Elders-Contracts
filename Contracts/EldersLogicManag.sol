@@ -28,7 +28,7 @@ contract EldersLogicManag is EldersVotingManag
     
  
       /** 
- * @dev mapping to store allowed logic contracts 
+ * @dev mapping to store allowed logic contracts roles for contracts from 1 to i+1 need fixing
  */
         mapping(address=>uint) private _allowedLogicContracts;
     
@@ -62,7 +62,9 @@ contract EldersLogicManag is EldersVotingManag
            EmptyContractVoteDetails();
       } 
       
-      
+      function LogicContractIsValid(address _contractAddress,uint _role) internal view returns(bool){
+          return _allowedLogicContracts[_contractAddress]==_role ;
+      }
       
          
 }
