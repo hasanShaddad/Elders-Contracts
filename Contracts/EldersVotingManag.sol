@@ -210,7 +210,7 @@ contract EldersVotingManag
     function SetContractVoteDetails( address  _contractAddress,
         uint _contractRole,
         bool _isForAdd)
-        internal 
+        public 
         TempContractVoteIsEmpty()
         SenderIsOwner(msg.sender)
         {
@@ -253,7 +253,7 @@ contract EldersVotingManag
  * ContractVoteTimeSpan > now
  */ 
  
-    function VoteOnNewContract(address _elderAddress, bool _isAgree) internal
+    function VoteOnNewContract(address _elderAddress, bool _isAgree) public
     ElderAddressIsValid(_elderAddress,true) ContractVoteNotExist(_elderAddress) ContractVoteDetailsValid() ContractVoteTimeSpanIsValid()
     {
         uint result =0;
@@ -288,7 +288,6 @@ contract EldersVotingManag
          uint result =100*( _ContractVoteDetails.AgrredVoicesCount/ _ContractVoteDetails.VotersCount);
          return result>=50;
      }
-     
  
          /**
    
